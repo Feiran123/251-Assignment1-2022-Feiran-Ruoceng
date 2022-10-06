@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputEvent;
 
 public class Mytext extends JFrame{
     protected JMenuBar menuBar;
@@ -7,11 +8,16 @@ public class Mytext extends JFrame{
     //菜单栏内的菜单
     protected JMenuItem file_new,file_open,file_save,file_exit;
     //对于file菜单的子项
-    protected JMenuItem manage_undo,manage_select,manage_cut,manage_copy,manage_paste,manage_delete;
+    protected static JMenuItem manage_select;
+    protected static JMenuItem manage_cut;
+    protected static JMenuItem manage_copy;
+    protected static JMenuItem manage_paste;
+    protected static JMenuItem manage_undo;
+    protected static JMenuItem manage_redo;
     //对于edit菜单的子项
     protected JMenuItem help_about;
     //对于help菜单的子项
-    protected JTextArea myTextArea;
+    protected static JTextArea myTextArea;
     protected JScrollPane my;
     public Mytext(){
         myTextArea=new JTextArea();
@@ -33,18 +39,19 @@ public class Mytext extends JFrame{
         File.add(file_save);
         File.add(file_exit);
         //file
-        manage_undo=new JMenuItem("Undo");
         manage_select=new JMenuItem("Select");
         manage_cut=new JMenuItem("Cut");
         manage_copy=new JMenuItem("Copy");
         manage_paste=new JMenuItem("Paste");
-        manage_delete=new JMenuItem("Delete");
-        Manage.add(manage_undo);
+        manage_undo=new JMenuItem("Undo");
+        manage_redo=new JMenuItem("Redo");
+
         Manage.add(manage_select);
         Manage.add(manage_cut);
         Manage.add(manage_copy);
         Manage.add(manage_paste);
-        Manage.add(manage_delete);
+        Manage.add(manage_undo);
+        Manage.add(manage_redo);
         //manage
         help_about=new JMenuItem("About");
         Help.add(help_about);
@@ -59,6 +66,10 @@ public class Mytext extends JFrame{
         myTextArea.setFont(new Font("Arial",Font.PLAIN, 15));
         myTextArea.setForeground(Color.black);
         //text area
+
+
+        new manage();
+
         this.add(my);
         this.setJMenuBar(menuBar);
         this.setSize(800,600);
