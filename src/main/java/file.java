@@ -33,7 +33,7 @@ public class file extends JFrame implements ActionListener{
                 fw.write(Mytext.myTextArea.getText());
                 currentFileName = file.getName();
                 currentPath=file.getAbsolutePath();
-                //如果比较少，需要写
+
                 fw.flush();
                 this.flag=3;
                 this.setTitle(currentPath);
