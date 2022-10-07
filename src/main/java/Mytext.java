@@ -14,6 +14,8 @@ public class Mytext extends JFrame{
     protected static JMenuItem file_saveAs;
     protected static JMenuItem file_exit;
     //file
+    protected static JMenuItem Find,Replace;
+    //search
     protected static JMenuItem manage_select;
     protected static JMenuItem manage_cut;
     protected static JMenuItem manage_copy;
@@ -62,6 +64,11 @@ public class Mytext extends JFrame{
         File.add(file_saveAs);
         File.add(file_exit);
         //file
+        Find=new JMenuItem("Find");
+        Replace=new JMenuItem("Replace");
+        Search.add(Find);
+        Search.add(Replace);
+        //search
         manage_select=new JMenuItem("Select");
         manage_cut=new JMenuItem("Cut");
         manage_copy=new JMenuItem("Copy");
@@ -89,6 +96,7 @@ public class Mytext extends JFrame{
         menuBar.add(Search);
         menuBar.add(View);
         menuBar.add(Manage);
+        menuBar.add(Source);
         menuBar.add(Help);
         //menuBar
         my.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -100,6 +108,8 @@ public class Mytext extends JFrame{
         new manage();
         new file();
         new about();
+        new source();
+        new search();
         this.add(my);
         this.setJMenuBar(menuBar);
         this.setSize(800,600);
