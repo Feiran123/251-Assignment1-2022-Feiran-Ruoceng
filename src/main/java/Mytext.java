@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 
 public class Mytext extends JFrame{
+
+
     protected JMenuBar menuBar;
     protected JMenu File,Search,View,Manage,Source,Help;
     //菜单栏内的菜单
@@ -26,6 +28,10 @@ public class Mytext extends JFrame{
     //help
     protected static JTextArea myTextArea;
     protected JScrollPane my;
+
+    protected static JTextArea edit_text_area;
+
+
     public Mytext(){
         myTextArea=new JTextArea();
         my=new JScrollPane(myTextArea);
@@ -49,6 +55,7 @@ public class Mytext extends JFrame{
         file_save=new JMenuItem("Save");
         file_exit=new JMenuItem("Exit");
         file_saveAs=new JMenuItem("SaveAs");
+
         File.add(file_new);
         File.add(file_open);
         File.add(file_save);
@@ -89,6 +96,7 @@ public class Mytext extends JFrame{
         myTextArea.setForeground(Color.black);
         //text area
 
+
         new manage();
         new file();
         new about();
@@ -99,5 +107,12 @@ public class Mytext extends JFrame{
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        file.isChanged();
     }
+
+    public static JTextArea getEdit_text_area() {
+        return edit_text_area;
+    }
+
 }
+
