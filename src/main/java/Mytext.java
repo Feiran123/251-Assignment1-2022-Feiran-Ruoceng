@@ -89,6 +89,7 @@ public class Mytext extends JFrame{
         myTextArea.setForeground(Color.black);
         //text area
 
+
         new manage();
         new file();
         new about();
