@@ -1,151 +1,88 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
 
-public class file extends Mytext implements ActionListener {
+public class file extends JFrame implements ActionListener{
+    int flag=0;
+    String currentPath=null;
+    String currentFileName=null;
+
+    FileDialog open=new FileDialog(this,"Open",FileDialog.LOAD);
+    FileDialog save=new FileDialog(this,"Save",FileDialog.SAVE);
+
     public file(){
         Mytext.file_save.addActionListener(this);
         Mytext.file_save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
     }
 
-    public void saveFile(){
+    public void saveAs(){
+
         JFileChooser jFileChooser=new JFileChooser();
-
-        jFileChooser.setDialogTitle("Open");
-        //only choose
-        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        jFileChooser.showOpenDialog(null);
-        jFileChooser.setVisible(true);
-
-        String abs=jFileChooser.getSelectedFile().getAbsolutePath();
-        FileWriter fw=null;
-        BufferedWriter bw=null;
-
-        File newfile =new File(abs);
-
-        try{
-            fw =new FileWriter(newfile);
-            bw=new BufferedWriter(fw);
-
-            //Label myTextArea = null;
-            String[] s=myTextArea.getText().split("\n");
-            for (String value:s){
-                bw.write(value+"\n");
-                bw.flush();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally{
-            try{
-                assert bw!=null;
-                bw.close();
-                fw.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+        int res=jFileChooser.showSaveDialog(this);
+        if(res==JFileChooser.APPROVE_OPTION){
+            //取得选择的文件[文件名是自己输入的]
+            File file=jFileChooser.getSelectedFile();
+            FileWriter fw=null;
+            //保存
+            try {
+                fw=new FileWriter(file);
+                fw.write(Mytext.myTextArea.getText());
+                currentFileName = file.getName();
+                currentPath=file.getAbsolutePath();
+                //如果比较少，需要写
+                fw.flush();
+                this.flag=3;
+                this.setTitle(currentPath);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }finally{
+                try {
+                    if(fw!=null) fw.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         }
     }
-
-    public String readFile() throws IOException{
-        FileReader fileReader =null;
-        BufferedReader bufferedReader=null;
-        JFileChooser jFileChooser=new JFileChooser();
-
-        jFileChooser.setDialogTitle("Open");
-        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        jFileChooser.showOpenDialog(null);
-        jFileChooser.setVisible(true);
-
-        String abs=jFileChooser.getSelectedFile().getAbsolutePath();
-        try{
-            fileReader=new FileReader(abs);
-            bufferedReader=new BufferedReader(fileReader);
-            String now;
-            String all="";
-
-            while((now=bufferedReader.readLine())!=null){
-                all+=now+"\n";
-                return all;
-
+    private void save() {
+        if (this.currentPath == null) {
+            this.saveAs();
+            if (this.currentPath == null) {
+                return;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally{
-            try{
-                assert bufferedReader !=null;
-                bufferedReader.close();
-                fileReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+        }
+        FileWriter fw = null;
+        //保存
+        try {
+            fw = new FileWriter(new File(currentPath));
+            fw.write(Mytext.myTextArea.getText());
+            //如果比较少，需要写
+            fw.flush();
+            flag = 3;
+            this.setTitle(this.currentPath);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } finally {
+            try {
+                if (fw != null) fw.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
         }
 
-
-        return null;
     }
+
+
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals("create")){
-            if(myTextArea.getText()==null||"".equals(myTextArea.getText())){
-                return;
-
-            }else{
-                int num =JOptionPane.showConfirmDialog(null,"Are you sure to save?","text",JOptionPane.YES_NO_OPTION);
-                if(num==0){
-                    new file();
-                    this.dispose();
-                    new Mytext();
-
-                }
-                if(num==1){
-                    this.dispose();
-                    new Mytext();
-                }
-
-            }
-        }
-        if(e.getSource()==file_save){
-            File file=new File("D://251//text");
-            FileWriter fw=null;
-            BufferedWriter bw=null;
-            try{
-                fw=new FileWriter(file);
-                bw=new BufferedWriter(fw);
-
-                String[] s = myTextArea.getText().split("\n");
-                for (String value : s) {
-                    bw.write(value + "\n");
-                    bw.flush();
-                }
-                System.out.println("Save successfully");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }finally {
-                try{
-                    assert bw !=null;
-                    bw.close();
-                    fw.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
+        if(e.getSource()==Mytext.file_save){
+            save();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
