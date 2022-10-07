@@ -92,7 +92,6 @@ public class Mytext extends JFrame{
         new manage();
         new file();
         new about();
-
         this.add(my);
         this.setJMenuBar(menuBar);
         this.setSize(800,600);

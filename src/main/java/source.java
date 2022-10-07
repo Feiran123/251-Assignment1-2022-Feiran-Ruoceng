@@ -23,7 +23,6 @@ public class source extends JFrame implements ActionListener {
         //String font={};
         //FontCh
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==Mytext.FontSet){

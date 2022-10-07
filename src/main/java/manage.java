@@ -10,7 +10,6 @@ import java.util.Calendar;
 public class manage extends JFrame implements ActionListener{
     UndoManager undoManager=new UndoManager();
     public manage(){
-
         Mytext.manage_select.addActionListener(this);
         Mytext.manage_select.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
         Mytext.manage_cut.addActionListener(this);
