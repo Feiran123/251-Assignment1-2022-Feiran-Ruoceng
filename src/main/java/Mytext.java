@@ -1,14 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputEvent;
 
 public class Mytext extends JFrame{
     protected JMenuBar menuBar;
     protected JMenu File,Search,View,Manage,Help;
     //菜单栏内的菜单
-    protected JMenuItem file_new;
-    protected JMenuItem file_open;
+    protected static JMenuItem file_new;
+    protected static JMenuItem file_open;
     protected static JMenuItem file_save;
-    protected JMenuItem file_exit;
+    protected static JMenuItem file_saveAs;
+    protected static JMenuItem file_exit;
     //对于file菜单的子项
     protected static JMenuItem manage_select;
     protected static JMenuItem manage_cut;
@@ -16,6 +18,7 @@ public class Mytext extends JFrame{
     protected static JMenuItem manage_paste;
     protected static JMenuItem manage_undo;
     protected static JMenuItem manage_redo;
+
     //对于edit菜单的子项
     protected JMenuItem help_about;
     //对于help菜单的子项
@@ -36,9 +39,11 @@ public class Mytext extends JFrame{
         file_open=new JMenuItem("Open");
         file_save=new JMenuItem("Save");
         file_exit=new JMenuItem("Exit");
+        file_saveAs=new JMenuItem("SaveAs");
         File.add(file_new);
         File.add(file_open);
         File.add(file_save);
+        File.add(file_saveAs);
         File.add(file_exit);
         //file
         manage_select=new JMenuItem("Select");
@@ -71,7 +76,6 @@ public class Mytext extends JFrame{
 
 
         new manage();
-        new file();
 
         this.add(my);
         this.setJMenuBar(menuBar);

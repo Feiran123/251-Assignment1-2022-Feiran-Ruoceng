@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class manage extends JFrame implements ActionListener{
     UndoManager undoManager=new UndoManager();
@@ -21,6 +23,8 @@ public class manage extends JFrame implements ActionListener{
         Mytext.manage_undo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
         Mytext.manage_redo.addActionListener(this);
         Mytext.manage_redo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
+        Mytext.manage_time.addActionListener(this);
+        Mytext.manage_time.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_MASK));
         Mytext.myTextArea.getDocument().addUndoableEditListener(undoManager);
     }
 
@@ -45,7 +49,11 @@ public class manage extends JFrame implements ActionListener{
         }
         if(e.getSource()==Mytext.manage_redo){
             if(undoManager.canRedo()) undoManager.redo();
-
+        }
+        if(e.getSource()==Mytext.manage_time){
+            Calendar calendar=Calendar.getInstance();
+            SimpleDateFormat dateFormat=new SimpleDateFormat("HH:mm yyyy/MM/dd");
+            Mytext.myTextArea.append(dateFormat.format(calendar.getTime()));
         }
     }
 }
