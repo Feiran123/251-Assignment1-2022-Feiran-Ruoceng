@@ -4,7 +4,7 @@ import java.awt.event.InputEvent;
 
 public class Mytext extends JFrame{
     protected JMenuBar menuBar;
-    protected JMenu File,Search,View,Manage,Help;
+    protected JMenu File,Search,View,Manage,Source,Help;
     //菜单栏内的菜单
     protected static JMenuItem file_new;
     protected static JMenuItem file_open;
@@ -18,9 +18,11 @@ public class Mytext extends JFrame{
     protected static JMenuItem manage_paste;
     protected static JMenuItem manage_undo;
     protected static JMenuItem manage_redo;
-
+    protected static JMenuItem manage_time;
     //对于edit菜单的子项
-    protected JMenuItem help_about;
+    protected static JMenuItem autoLine,FontSet;
+    //对于source菜单的子项
+    protected static JMenuItem help_about;
     //对于help菜单的子项
     protected static JTextArea myTextArea;
     protected JScrollPane my;
@@ -33,7 +35,14 @@ public class Mytext extends JFrame{
         Search=new JMenu("Search");
         View=new JMenu("View");
         Manage=new JMenu("Manage");
+        Source=new JMenu("Source");
         Help=new JMenu("Help");
+        File.setMnemonic('f');
+        Search.setMnemonic('s');
+        View.setMnemonic('v');
+        Manage.setMnemonic('m');
+        Source.setMnemonic('o');
+        Help.setMnemonic('h');
         //menu
         file_new=new JMenuItem("New");
         file_open=new JMenuItem("Open");
@@ -52,14 +61,20 @@ public class Mytext extends JFrame{
         manage_paste=new JMenuItem("Paste");
         manage_undo=new JMenuItem("Undo");
         manage_redo=new JMenuItem("Redo");
-
+        manage_time=new JMenuItem("Time and Date");
         Manage.add(manage_select);
         Manage.add(manage_cut);
         Manage.add(manage_copy);
         Manage.add(manage_paste);
         Manage.add(manage_undo);
         Manage.add(manage_redo);
+        Manage.add(manage_time);
         //manage
+        autoLine=new JMenuItem("AutoLine");
+        FontSet=new JMenuItem("Fontset");
+        Source.add(autoLine);
+        Source.add(FontSet);
+        //source
         help_about=new JMenuItem("About");
         Help.add(help_about);
         //help
@@ -74,8 +89,9 @@ public class Mytext extends JFrame{
         myTextArea.setForeground(Color.black);
         //text area
 
-
         new manage();
+        new file();
+        new about();
 
         this.add(my);
         this.setJMenuBar(menuBar);
