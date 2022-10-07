@@ -77,8 +77,6 @@ public class file extends JFrame implements ActionListener{
     }
 
 
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==Mytext.file_save){
