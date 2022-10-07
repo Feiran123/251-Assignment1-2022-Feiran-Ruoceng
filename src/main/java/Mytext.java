@@ -11,7 +11,7 @@ public class Mytext extends JFrame{
     protected static JMenuItem file_save;
     protected static JMenuItem file_saveAs;
     protected static JMenuItem file_exit;
-    //对于file菜单的子项
+    //file
     protected static JMenuItem manage_select;
     protected static JMenuItem manage_cut;
     protected static JMenuItem manage_copy;
