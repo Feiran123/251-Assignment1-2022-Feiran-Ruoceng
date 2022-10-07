@@ -23,7 +23,7 @@ public class Mytext extends JFrame{
     protected static JMenuItem autoLine,FontSet;
     //source
     protected static JMenuItem help_about;
-    //对于help菜单的子项
+    //help
     protected static JTextArea myTextArea;
     protected JScrollPane my;
     public Mytext(){
