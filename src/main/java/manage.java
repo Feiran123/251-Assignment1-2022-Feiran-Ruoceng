@@ -29,7 +29,6 @@ public class manage extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         if(e.getSource()==Mytext.manage_select){
             Mytext.myTextArea.selectAll();
         }

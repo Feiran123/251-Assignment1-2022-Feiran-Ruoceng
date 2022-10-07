@@ -19,9 +19,9 @@ public class Mytext extends JFrame{
     protected static JMenuItem manage_undo;
     protected static JMenuItem manage_redo;
     protected static JMenuItem manage_time;
-    //对于edit菜单的子项
+    //manage
     protected static JMenuItem autoLine,FontSet;
-    //对于source菜单的子项
+    //source
     protected static JMenuItem help_about;
     //对于help菜单的子项
     protected static JTextArea myTextArea;
