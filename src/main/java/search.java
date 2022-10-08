@@ -7,7 +7,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.Locale;
 
-
 public class search extends JFrame implements ActionListener {
     public search(){
         Mytext.Find.addActionListener(this);
