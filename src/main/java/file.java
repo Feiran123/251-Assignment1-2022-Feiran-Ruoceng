@@ -7,6 +7,8 @@ public class file extends JFrame implements ActionListener{
     public static int flag=0;
     String currentPath=null;
     String currentFileName=null;
+    PrintJob p=null;
+    Graphics g=null;
 
     FileDialog open=new FileDialog(this,"Open",FileDialog.LOAD);
     FileDialog save=new FileDialog(this,"Save",FileDialog.SAVE);
@@ -24,6 +26,9 @@ public class file extends JFrame implements ActionListener{
 
         Mytext.file_new.addActionListener(this);
         Mytext.file_new.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
+
+        Mytext.file_print.addActionListener(this);
+        Mytext.file_print.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
 
         Mytext.file_exit.addActionListener(this);
     }
@@ -207,6 +212,16 @@ public class file extends JFrame implements ActionListener{
             }
         }
     }
+    public void print(){
+        try{
+            p= getToolkit().getPrintJob(this,"ok",null);
+            g=p.getGraphics();
+            Mytext.myTextArea.printAll(g);
+            p.end();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
         @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==Mytext.file_open){
@@ -223,6 +238,9 @@ public class file extends JFrame implements ActionListener{
         }
         if(e.getSource()==Mytext.file_exit){
             exit();
+        }
+        if(e.getSource()==Mytext.file_print){
+            print();
         }
 
     }
