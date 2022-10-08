@@ -1,18 +1,18 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.InputEvent;
 
 public class Mytext extends JFrame{
 
 
     protected JMenuBar menuBar;
-    protected JMenu File,Search,View,Manage,Source,Help;
+    protected JMenu File,Search,View,Manage,Format,Help;
     //菜单栏内的菜单
     protected static JMenuItem file_new;
     protected static JMenuItem file_open;
     protected static JMenuItem file_save;
     protected static JMenuItem file_saveAs;
     protected static JMenuItem file_exit;
+    protected static JMenuItem file_print;
     //file
     protected static JMenuItem Find,Replace;
     //search
@@ -43,13 +43,13 @@ public class Mytext extends JFrame{
         Search=new JMenu("Search");
         View=new JMenu("View");
         Manage=new JMenu("Manage");
-        Source=new JMenu("Source");
+        Format=new JMenu("Format");
         Help=new JMenu("Help");
         File.setMnemonic('f');
         Search.setMnemonic('s');
         View.setMnemonic('v');
         Manage.setMnemonic('m');
-        Source.setMnemonic('o');
+        Format.setMnemonic('o');
         Help.setMnemonic('h');
         //menu
         file_new=new JMenuItem("New");
@@ -57,12 +57,15 @@ public class Mytext extends JFrame{
         file_save=new JMenuItem("Save");
         file_exit=new JMenuItem("Exit");
         file_saveAs=new JMenuItem("SaveAs");
+        file_print=new JMenuItem("Print");
 
         File.add(file_new);
         File.add(file_open);
         File.add(file_save);
         File.add(file_saveAs);
+        File.add(file_print);
         File.add(file_exit);
+
         //file
         Find=new JMenuItem("Find");
         Replace=new JMenuItem("Replace");
@@ -86,8 +89,8 @@ public class Mytext extends JFrame{
         //manage
         autoLine=new JMenuItem("AutoLine");
         FontSet=new JMenuItem("Fontset");
-        Source.add(autoLine);
-        Source.add(FontSet);
+        Format.add(autoLine);
+        Format.add(FontSet);
         //source
         help_about=new JMenuItem("About");
         Help.add(help_about);
@@ -96,11 +99,11 @@ public class Mytext extends JFrame{
         menuBar.add(Search);
         menuBar.add(View);
         menuBar.add(Manage);
-        menuBar.add(Source);
+        menuBar.add(Format);
         menuBar.add(Help);
         //menuBar
         my.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        myTextArea.setFont(new Font("Arial",Font.PLAIN, 15));
+        myTextArea.setFont(new Font("Arial", Font.PLAIN, 15));
         myTextArea.setForeground(Color.black);
         //text area
 
@@ -108,8 +111,9 @@ public class Mytext extends JFrame{
         new manage();
         new file();
         new about();
-        new source();
+        new format();
         new search();
+        new Font_Format(Mytext.myTextArea.getFont());
         this.add(my);
         this.setJMenuBar(menuBar);
         this.setSize(800,600);
