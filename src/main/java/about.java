@@ -22,9 +22,11 @@ public class about extends JFrame implements ActionListener{
         String s1="The information of my team members:";
         String s2="member1:";
         String s3="name: Feiran Li; Id: 21012669";
+        String s6="She is very careful and have a sense of responsibility";
         String s4="member2:";
         String s5="name: Ruoceng Gao; Id: 21012663";
-        String s="<html><body>"+s1+"<br>"+s2+"<br>"+s3+"<br>"+s4+"<br>"+s5+"<html></body>";
+        String s7="She work hard and persistent";
+        String s="<html><body>"+s1+"<br>"+s2+"<br>"+s3+"<br>"+s6+"<br>"+s4+"<br>"+s5+"<br>"+s7+"<html></body>";
         label=new JLabel(s);
         label.setAlignmentX(CENTER_ALIGNMENT);
 
@@ -34,6 +36,7 @@ public class about extends JFrame implements ActionListener{
         this.add(panel);
         this.setSize(400,300);
         this.setTitle("About");
+        this.setLocation(450,200);
         this.setVisible(true);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
