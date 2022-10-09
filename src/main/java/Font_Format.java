@@ -89,7 +89,7 @@ public class Font_Format extends JDialog implements ActionListener{
     private int returnValue = CANCEL_OPTION;
 
     public Font_Format(Font font) {
-        Mytext.FontSet.addActionListener((ActionListener) this);
+        //Mytext.FontSet.addActionListener((ActionListener) this);
         new Font("宋体", Font.PLAIN, 12);
     }
 

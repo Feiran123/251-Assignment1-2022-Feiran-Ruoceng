@@ -1,11 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
 
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
+
 public class Mytext extends JFrame{
 
 
     protected JMenuBar menuBar;
-    protected JMenu File,Search,View,Manage,Format,Help;
+    protected JMenu File,Search,View,syntax,Manage,Format,Help;
     //菜单栏内的菜单
     protected static JMenuItem file_new;
     protected static JMenuItem file_open;
@@ -23,20 +27,27 @@ public class Mytext extends JFrame{
     protected static JMenuItem manage_undo;
     protected static JMenuItem manage_redo;
     protected static JMenuItem manage_time;
+    //view
+    protected static JCheckBoxMenuItem language1,language2,language3,language4,language5,language6,language7,language8,
+                                       language9,language10;
     //manage
     protected static JMenuItem autoLine,FontSet;
     //source
     protected static JMenuItem help_about;
     //help
-    protected static JTextArea myTextArea;
-    protected JScrollPane my;
+    protected static RSyntaxTextArea myTextArea;
+    //protected RSyntaxTextArea textArea;
+    protected RTextScrollPane my;
 
-    protected static JTextArea edit_text_area;
+    //protected static JTextArea edit_text_area;
 
 
     public Mytext(){
-        myTextArea=new JTextArea();
-        my=new JScrollPane(myTextArea);
+        myTextArea=new RSyntaxTextArea(20,60);
+        myTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
+        //language1.setState(true);
+        myTextArea.setCodeFoldingEnabled(true);
+        my=new RTextScrollPane(myTextArea);
         menuBar=new JMenuBar();
 
         File=new JMenu("File");
@@ -87,6 +98,30 @@ public class Mytext extends JFrame{
         Manage.add(manage_redo);
         Manage.add(manage_time);
         //manage
+        syntax=new JMenu("Syntax");
+        language1=new JCheckBoxMenuItem("Plain Text");
+        language2=new JCheckBoxMenuItem("C");
+        language3=new JCheckBoxMenuItem("C#");
+        language4=new JCheckBoxMenuItem("C++");
+        language5=new JCheckBoxMenuItem("CSS");
+        language6=new JCheckBoxMenuItem("HTML");
+        language7=new JCheckBoxMenuItem("Java");
+        language8=new JCheckBoxMenuItem("JavaScript");
+        language9=new JCheckBoxMenuItem("Markdown");
+        language10=new JCheckBoxMenuItem("Python");
+
+        View.add(syntax);
+        syntax.add(language1);
+        syntax.add(language2);
+        syntax.add(language3);
+        syntax.add(language4);
+        syntax.add(language5);
+        syntax.add(language6);
+        syntax.add(language7);
+        syntax.add(language8);
+        syntax.add(language9);
+        syntax.add(language10);
+        //syntax
         autoLine=new JMenuItem("AutoLine");
         FontSet=new JMenuItem("Fontset");
         Format.add(autoLine);
@@ -102,7 +137,7 @@ public class Mytext extends JFrame{
         menuBar.add(Format);
         menuBar.add(Help);
         //menuBar
-        my.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        //my.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         myTextArea.setFont(new Font("Arial", Font.PLAIN, 15));
         myTextArea.setForeground(Color.black);
         //text area
@@ -113,6 +148,7 @@ public class Mytext extends JFrame{
         new about();
         new format();
         new search();
+        new syntax();
         new Font_Format(Mytext.myTextArea.getFont());
         this.add(my);
         this.setJMenuBar(menuBar);
@@ -122,10 +158,6 @@ public class Mytext extends JFrame{
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         file.isChanged();
-    }
-
-    public static JTextArea getEdit_text_area() {
-        return edit_text_area;
     }
 
 }
