@@ -154,7 +154,8 @@ public class Mytext extends JFrame{
         new format();
         new search();
         new syntax();
-        new Font_Format(Mytext.myTextArea.getFont());
+        new font();
+
         this.add(my);
         this.setJMenuBar(menuBar);
         this.setSize(800,600);
