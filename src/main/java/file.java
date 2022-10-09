@@ -220,6 +220,7 @@ public class file extends JFrame implements ActionListener {
 //                this.dispose();
 //                this.setDefaultCloseOperation(EXIT_ON_CLOSE);
             }
+
         } else if (flag == 2 && currentPath != null) {
 
             int result = JOptionPane.showConfirmDialog(this, "If you want to save changes to" + currentPath + "?", "Notepad", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
