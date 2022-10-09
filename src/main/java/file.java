@@ -1,7 +1,24 @@
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.rtf.RTFEditorKit;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Enumeration;
+import java.util.zip.DataFormatException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class file extends JFrame implements ActionListener{
     public static int flag=0;
@@ -12,6 +29,7 @@ public class file extends JFrame implements ActionListener{
 
     FileDialog open=new FileDialog(this,"Open",FileDialog.LOAD);
     FileDialog save=new FileDialog(this,"Save",FileDialog.SAVE);
+    FileDialog export2pdf = new FileDialog(this,"Export",FileDialog.SAVE);
 
 
     public file(){
@@ -29,6 +47,8 @@ public class file extends JFrame implements ActionListener{
 
         Mytext.file_print.addActionListener(this);
         Mytext.file_print.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
+
+        Mytext.file_toPDF.addActionListener(this);
 
         Mytext.file_exit.addActionListener(this);
     }
@@ -133,6 +153,30 @@ public class file extends JFrame implements ActionListener{
             }
         }
     }
+
+    private String readFile(File file) throws Exception {
+        String suffix = getFileSuffix(file);
+        syntax.change(suffix);
+        StringBuilder result = new StringBuilder();
+        if(suffix.equals("odt")){
+            result = oriContent(Mytext.myfile.getPath());
+            return result.toString();
+        }
+        if(suffix.equals("rtf")){
+            return Rtf(file.getPath());
+        }
+        try (FileReader fr = new FileReader(file); BufferedReader reader = new BufferedReader(fr)) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                result.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Cannot read file !", "Error !", JOptionPane.ERROR_MESSAGE);
+        }
+        return result.toString();
+    }
+
     public void open() {
         if (flag == 2 && this.currentPath == null) {
             int res = JOptionPane.showConfirmDialog(this, "Are you sure to save", "notebook", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -222,6 +266,22 @@ public class file extends JFrame implements ActionListener{
             e.printStackTrace();
         }
     }
+
+    public void toPDF()throws FileNotFoundException, DocumentException {
+        Document document=new Document(PageSize.A4,50,50,30,20);
+        String text = Mytext.myTextArea.getText();
+        export2pdf.setVisible(true);
+        String dirPath = export2pdf.getDirectory();  //获取保存文件路径并保存到字符串中
+        System.out.println(dirPath);
+        String fileName = export2pdf.getFile() + ".pdf";
+        System.out.println(fileName);
+        PdfWriter.getInstance(document, new FileOutputStream(dirPath+'/'+fileName));
+
+        document.open();
+        document.add(new Paragraph(text));
+        document.close();
+
+    }
         @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==Mytext.file_open){
@@ -242,6 +302,88 @@ public class file extends JFrame implements ActionListener{
         if(e.getSource()==Mytext.file_print){
             print();
         }
+        if(e.getSource()==Mytext.file_toPDF){
+            try {
+                toPDF();
+            } catch (FileNotFoundException | DocumentException ex) {
+                ex.printStackTrace();
+            }
+        }
 
+    }
+    public static String getFileSuffix(File file) {
+        if (file == null) {
+            return null;
+        }
+        String suffix = null;
+        String fileName = file.getName();
+        if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0) {
+            suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+        }
+        return suffix;
+    }
+    public static String Rtf(String filePath) {
+        String result = null;
+        File file = new File(filePath);
+        try {
+            DefaultStyledDocument styledDoc = new DefaultStyledDocument();
+            //create a file input stream
+            InputStream streamReader = new FileInputStream(file);
+            new RTFEditorKit().read(streamReader, styledDoc, 0);
+            //the encoding form of ISO-8859-1 obtains the word byte[] and generates the character event in the encoding form of GBK
+            result = new String(styledDoc.getText(0, styledDoc.getLength()).getBytes("ISO8859-1"),"GBK");
+        } catch (IOException | BadLocationException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    static String str = "";
+    private static void getText(org.w3c.dom.Node node) {
+        if (node.getChildNodes().getLength() > 1) {
+            NodeList childNodes = node.getChildNodes();
+            for (int a = 0; a < childNodes.getLength(); a++) {
+                getText(node.getChildNodes().item(a));
+            }
+        } else {
+            if (node.getNodeValue() != null) {
+                //str is used to concatenate the label content
+                str = str + node.getNodeValue();
+            }
+            if (node.getFirstChild() != null) {
+                str = str + node.getFirstChild().getNodeValue();
+            }
+        }
+    }
+    public StringBuilder oriContent(String srcFile) throws Exception {
+        StringBuilder result = new StringBuilder();
+        ZipFile zipFile = new ZipFile(srcFile);
+        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        ZipEntry entry;
+        org.w3c.dom.Document doc;
+        while (entries.hasMoreElements()) {
+            entry = entries.nextElement();
+            //only operate the .xml file
+            if (entry.getName().equals("content.xml")) {
+                //create the file
+                DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+                domFactory.setNamespaceAware(true);
+                DocumentBuilder docBuilder = domFactory.newDocumentBuilder();
+                doc = docBuilder.parse(zipFile.getInputStream(entry));
+                //access to the node
+                NodeList list = doc.getElementsByTagName("text:p");
+
+                for (int a = 0; a < list.getLength(); a++) {
+                    Node node =list.item(a);
+                    //retrieve the label content recursively
+                    getText(node);
+                    //System.out.println(str);
+                    result.append(str).append("\n");
+                    //empty the data, record the content of next label
+                    str = "";
+                }
+            }
+        }
+        return result;
     }
 }

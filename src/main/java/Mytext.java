@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -17,6 +18,7 @@ public class Mytext extends JFrame{
     protected static JMenuItem file_saveAs;
     protected static JMenuItem file_exit;
     protected static JMenuItem file_print;
+    protected static JMenuItem file_toPDF;
     //file
     protected static JMenuItem Find,Replace;
     //search
@@ -39,7 +41,8 @@ public class Mytext extends JFrame{
     //protected RSyntaxTextArea textArea;
     protected RTextScrollPane my;
 
-    //protected static JTextArea edit_text_area;
+    static JTextArea edit_text_area;
+    public static File myfile;
 
 
     public Mytext(){
@@ -69,12 +72,14 @@ public class Mytext extends JFrame{
         file_exit=new JMenuItem("Exit");
         file_saveAs=new JMenuItem("SaveAs");
         file_print=new JMenuItem("Print");
+        file_toPDF=new JMenuItem("Export to PDF");
 
         File.add(file_new);
         File.add(file_open);
         File.add(file_save);
         File.add(file_saveAs);
         File.add(file_print);
+        File.add(file_toPDF);
         File.add(file_exit);
 
         //file
@@ -158,6 +163,10 @@ public class Mytext extends JFrame{
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         file.isChanged();
+    }
+
+    public static JTextArea getEdit_text_area() {
+        return edit_text_area;
     }
 
 }
