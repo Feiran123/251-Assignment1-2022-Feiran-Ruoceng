@@ -5,7 +5,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Map;
+import java.util.Objects;
 
+import com.esotericsoftware.yamlbeans.YamlException;
+import com.esotericsoftware.yamlbeans.YamlReader;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -50,7 +56,7 @@ public class Mytext extends JFrame implements DocumentListener {
     public static boolean forchanged = false;
 
 
-    public Mytext(){
+    public Mytext() throws YamlException, FileNotFoundException {
         myTextArea=new RSyntaxTextArea(20,60);
         myTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
         //language1.setState(true);
@@ -138,24 +144,34 @@ public class Mytext extends JFrame implements DocumentListener {
         Format.add(autoLine);
         Format.add(FontSet);
         Format.add(Back);
-
-        //source
+//source
+        //help
         help_about=new JMenuItem("About");
         Help.add(help_about);
-        //help
+        //menuBar
         menuBar.add(File);
         menuBar.add(Search);
         menuBar.add(View);
         menuBar.add(Manage);
         menuBar.add(Format);
         menuBar.add(Help);
-        //menuBar
-        //my.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        myTextArea.setFont(new Font("Arial", Font.PLAIN, 15));
-        myTextArea.setForeground(Color.black);
+        //change the font size according to the YAML file
+        YamlReader reader=new YamlReader(new FileReader("maven.yml"));
+        Map map=(Map) reader.read();
+        Object fontsize=map.get("fontsize");
+        int size=Integer.parseInt((String)fontsize );
+        myTextArea.setFont(new Font("Arial", Font.PLAIN, size));
+
+        //change the background color according to the YAML file
+        Object fontcolorR=map.get("fontcolorR");
+        int R=Integer.parseInt((String) fontcolorR);
+        Object fontcolorG=map.get("fontcolorG");
+        int G=Integer.parseInt((String) fontcolorG);
+        Object fontcolorB=map.get("fontcolorR");
+        int B=Integer.parseInt((String) fontcolorB);
+        myTextArea.setBackground(new Color(R,G,B));
         //text area
-
-
+        myTextArea.setForeground(Color.black);
         new manage();
         new file(this);
         new about();

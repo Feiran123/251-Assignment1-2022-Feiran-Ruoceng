@@ -6,7 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Map;
+import java.util.Objects;
 
 public class format extends JFrame implements ActionListener {
     private static final long serialVersionUID = -6437493905392469749L;
@@ -49,9 +52,14 @@ public class format extends JFrame implements ActionListener {
 
         }
     }
-    public void run(){
-        try{
-            YamlReader reader=new YamlReader(new FileReader(""))
-        }
-    }
+//    public void run() throws FileNotFoundException {
+//        try{
+//            YamlReader reader=new YamlReader(new FileReader("maven.yml"));
+//            Map map=(Map) reader.read();
+//            Object my  map.get("fontsize");
+//
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 }
