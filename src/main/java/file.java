@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.Enumeration;
-import java.util.zip.DataFormatException;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -20,24 +20,27 @@ import com.itextpdf.text.pdf.PdfWriter;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class file extends JFrame implements ActionListener{
-    public static int flag=0;
-    String currentPath=null;
-    String currentFileName=null;
-    PrintJob p=null;
-    Graphics g=null;
+public class file extends JFrame implements ActionListener {
+    Mytext text;
+    public static int flag = 0;
+    String currentPath = null;
+    String currentFileName = null;
+    PrintJob p = null;
+    Graphics g = null;
+    String content;
 
-    FileDialog open=new FileDialog(this,"Open",FileDialog.LOAD);
-    FileDialog save=new FileDialog(this,"Save",FileDialog.SAVE);
-    FileDialog export2pdf = new FileDialog(this,"Export",FileDialog.SAVE);
+    FileDialog open = new FileDialog(this, "Open", FileDialog.LOAD);
+    FileDialog save = new FileDialog(this, "Save", FileDialog.SAVE);
+    FileDialog export2pdf = new FileDialog(this, "Export", FileDialog.SAVE);
 
 
-    public file(){
+    public file(Mytext t) {
+        text = t;
         Mytext.file_save.addActionListener(this);
         Mytext.file_save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 
         Mytext.file_saveAs.addActionListener(this);
-        Mytext.file_saveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
+        //Mytext.file_saveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 
         Mytext.file_open.addActionListener(this);
         Mytext.file_open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
@@ -53,81 +56,81 @@ public class file extends JFrame implements ActionListener{
         Mytext.file_exit.addActionListener(this);
     }
 
-    static void isChanged(){
+    static void isChanged() {
         Mytext.myTextArea.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                Character ch=e.getKeyChar();
-                if(ch!=null&&!Mytext.myTextArea.getText().toString().equals("")){
-                    flag=2;
+                Character ch = e.getKeyChar();
+                if (ch != null && !Mytext.myTextArea.getText().toString().equals("")) {
+                    flag = 2;
                 }
             }
         });
     }
 
 
-
-    public void New(){
-        if(flag==0 || flag==1){        //刚启动记事本为0，刚新建文档为1
+    public void New() {
+        if (flag == 0 || flag == 1) {        //刚启动记事本为0，刚新建文档为1
             return;
-        }else if(flag==2 && this.currentPath==null){        //修改后
+        } else if (flag == 2 && this.currentPath == null) {        //修改后
             //1、（刚启动记事本为0，刚新建文档为1）条件下修改后
-            int result=JOptionPane.showConfirmDialog(this, "Are you sure to save changes to untitled?", "Notepad", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if(result==JOptionPane.OK_OPTION){
+            int result = JOptionPane.showConfirmDialog(this, "Are you sure to save changes to untitled?", "Notepad", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (result == JOptionPane.OK_OPTION) {
                 this.saveAs();        //另存为
-            }else if(result==JOptionPane.NO_OPTION){
+            } else if (result == JOptionPane.NO_OPTION) {
                 Mytext.myTextArea.setText("");
                 this.setTitle("Untitled");
-                flag=1;
+                flag = 1;
             }
             return;
-        }else if(flag==2 && this.currentPath!=null ){
+        } else if (flag == 2 && this.currentPath != null) {
             //2、（保存的文件为3）条件下修改后
-            int result=JOptionPane.showConfirmDialog(this, "是否将更改保存到"+this.currentPath+"?", "Notepad", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if(result==JOptionPane.OK_OPTION){
+            int result = JOptionPane.showConfirmDialog(this, "是否将更改保存到" + this.currentPath + "?", "Notepad", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            if (result == JOptionPane.OK_OPTION) {
                 this.save();        //直接保存，有路径
-            }else if(result==JOptionPane.NO_OPTION){
+            } else if (result == JOptionPane.NO_OPTION) {
                 Mytext.myTextArea.setText("");
                 this.setTitle("Untitled");
-                flag=1;
+                flag = 1;
             }
-        }else if(flag==3){        //saved file
+        } else if (flag == 3) {        //saved file
             Mytext.myTextArea.setText("");
-            flag=1;
+            flag = 1;
             this.setTitle("Untitled");
         }
 
     }
 
-    public void saveAs(){
+    public void saveAs() {
 
-        JFileChooser jFileChooser=new JFileChooser();
-        int res=jFileChooser.showSaveDialog(this);
-        if(res==JFileChooser.APPROVE_OPTION){
+        JFileChooser jFileChooser = new JFileChooser();
+        int res = jFileChooser.showSaveDialog(this);
+        if (res == JFileChooser.APPROVE_OPTION) {
             //取得选择的文件[文件名是自己输入的]
-            File file=jFileChooser.getSelectedFile();
-            FileWriter fw=null;
+            File file = jFileChooser.getSelectedFile();
+            FileWriter fw = null;
             //保存
             try {
-                fw=new FileWriter(file);
+                fw = new FileWriter(file);
                 fw.write(Mytext.myTextArea.getText());
                 currentFileName = file.getName();
-                currentPath=file.getAbsolutePath();
+                currentPath = file.getAbsolutePath();
 
                 fw.flush();
-                this.flag=3;
+                this.flag = 3;
                 this.setTitle(currentPath);
             } catch (IOException e1) {
                 e1.printStackTrace();
-            }finally{
+            } finally {
                 try {
-                    if(fw!=null) fw.close();
+                    if (fw != null) fw.close();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
             }
         }
     }
+
     public void save() {
         if (this.currentPath == null) {
             this.saveAs();
@@ -158,11 +161,11 @@ public class file extends JFrame implements ActionListener{
         String suffix = getFileSuffix(file);
         syntax.change(suffix);
         StringBuilder result = new StringBuilder();
-        if(suffix.equals("odt")){
+        if (suffix.equals("odt")) {
             result = oriContent(Mytext.myfile.getPath());
             return result.toString();
         }
-        if(suffix.equals("rtf")){
+        if (suffix.equals("rtf")) {
             return Rtf(file.getPath());
         }
         try (FileReader fr = new FileReader(file); BufferedReader reader = new BufferedReader(fr)) {
@@ -178,84 +181,68 @@ public class file extends JFrame implements ActionListener{
     }
 
     public void open() {
-        if (flag == 2 && this.currentPath == null) {
-            int res = JOptionPane.showConfirmDialog(this, "Are you sure to save", "notebook", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if (res == JOptionPane.OK_OPTION) {
-                this.saveAs();
-            } else if (flag == 2 && this.currentPath != null) {
-                int result = JOptionPane.showConfirmDialog(this, "If you want to save changes to" + this.currentPath + "?", "Notepad", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                if (result == JOptionPane.OK_OPTION) {
-                    this.save();
-
+        JFileChooser dialog = new JFileChooser();
+        dialog.setMultiSelectionEnabled(false);
+        try {
+            int result = dialog.showOpenDialog(this);
+            if (result == JFileChooser.CANCEL_OPTION)
+                return;
+            if (result == JFileChooser.APPROVE_OPTION) {
+                if (Mytext.forchanged)
+                    save();
+                Mytext.myfile = dialog.getSelectedFile();
+                content = readFile(Mytext.myfile);
+                Mytext.myTextArea.setText(content);
+                if (Objects.equals(getFileSuffix(Mytext.myfile), "odt") || Objects.equals(getFileSuffix(Mytext.myfile), "rtf")) {
+                    text.setTitle("Editor - " + Mytext.myfile.getName() + "(Read Only)");
+                    Mytext.myTextArea.setEditable(false);
+                    Mytext.forchanged = false;
+                    return;
                 }
+                Mytext.forchanged = false;
+                text.setTitle("Editor - " + Mytext.myfile.getName());
             }
-
-        }
-        JFileChooser choose = new JFileChooser();
-        //choose file
-        int result = choose.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            //get the chosen file
-            File file = choose.getSelectedFile();
-            //打开已存在的文件，提前将文件名存起来
-            currentFileName = file.getName();
-            //存在文件全路径
-            currentPath = file.getAbsolutePath();
-            flag = 3;
-            this.setTitle(this.currentPath);
-            BufferedReader br = null;
-            try {
-                //建立文件流[字符流]
-                InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "GBK");
-                br = new BufferedReader(isr);//动态绑定
-                //读取内容
-                StringBuffer sb = new StringBuffer();
-                String line = null;
-                while ((line = br.readLine()) != null) {
-                    sb.append(line).append(SystemParam.LINE_SEPARATOR);
-                }
-                //显示在文本框[多框]
-                Mytext.myTextArea.setText(sb.toString());
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            } finally {
-                try {
-                    if (br != null) br.close();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-            }
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     public void exit() {
         if (flag == 2 && currentPath == null) {
             int result = JOptionPane.showConfirmDialog(this, "Are you sure to save changes to untitled?", "Notepad", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
                 saveAs();
+                System.exit(0);
+
             } else if (result == JOptionPane.NO_OPTION) {
-                this.dispose();
-                this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                System.exit(0);
+//                this.dispose();
+//                this.setDefaultCloseOperation(EXIT_ON_CLOSE);
             }
+
         } else if (flag == 2 && currentPath != null) {
 
             int result = JOptionPane.showConfirmDialog(this, "If you want to save changes to" + currentPath + "?", "Notepad", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
                 save();
+                System.exit(0);
+
             } else if (result == JOptionPane.NO_OPTION) {
-                this.dispose();
-                this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                System.exit(0);
+//                this.dispose();
+//                this.setDefaultCloseOperation(EXIT_ON_CLOSE);
             }
         } else {
             int result = JOptionPane.showConfirmDialog(this, "Are you sure to close?", "System prompt", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
-                this.dispose();
-                this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                System.exit(0);
+                //this.dispose();
+                //this.setDefaultCloseOperation(EXIT_ON_CLOSE);
             }
         }
     }
+
     public void print(){
         try{
             p= getToolkit().getPrintJob(this,"ok",null);
@@ -284,7 +271,7 @@ public class file extends JFrame implements ActionListener{
     }
         @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==Mytext.file_open){
+        if(e.getSource()==Mytext.file_open) {
             open();
         }
         if(e.getSource()==Mytext.file_new){
@@ -327,10 +314,8 @@ public class file extends JFrame implements ActionListener{
         File file = new File(filePath);
         try {
             DefaultStyledDocument styledDoc = new DefaultStyledDocument();
-            //create a file input stream
             InputStream streamReader = new FileInputStream(file);
             new RTFEditorKit().read(streamReader, styledDoc, 0);
-            //the encoding form of ISO-8859-1 obtains the word byte[] and generates the character event in the encoding form of GBK
             result = new String(styledDoc.getText(0, styledDoc.getLength()).getBytes("ISO8859-1"),"GBK");
         } catch (IOException | BadLocationException e) {
             e.printStackTrace();

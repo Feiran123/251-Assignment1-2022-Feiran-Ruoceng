@@ -1,12 +1,16 @@
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-public class Mytext extends JFrame{
+public class Mytext extends JFrame implements DocumentListener {
 
 
     protected JMenuBar menuBar;
@@ -33,7 +37,7 @@ public class Mytext extends JFrame{
     protected static JCheckBoxMenuItem language1,language2,language3,language4,language5,language6,language7,language8,
                                        language9,language10;
     //manage
-    protected static JMenuItem autoLine,FontSet;
+    protected static JMenuItem autoLine,FontSet,Back;
     //source
     protected static JMenuItem help_about;
     //help
@@ -41,8 +45,9 @@ public class Mytext extends JFrame{
     //protected RSyntaxTextArea textArea;
     protected RTextScrollPane my;
 
-    static JTextArea edit_text_area;
+    //tatic JTextArea edit_text_area;
     public static File myfile;
+    public static boolean forchanged = false;
 
 
     public Mytext(){
@@ -129,8 +134,11 @@ public class Mytext extends JFrame{
         //syntax
         autoLine=new JMenuItem("AutoLine");
         FontSet=new JMenuItem("Fontset");
+        Back=new JMenuItem("Background_color");
         Format.add(autoLine);
         Format.add(FontSet);
+        Format.add(Back);
+
         //source
         help_about=new JMenuItem("About");
         Help.add(help_about);
@@ -149,7 +157,7 @@ public class Mytext extends JFrame{
 
 
         new manage();
-        new file();
+        new file(this);
         new about();
         new format();
         new search();
@@ -166,9 +174,24 @@ public class Mytext extends JFrame{
         file.isChanged();
     }
 
-    public static JTextArea getEdit_text_area() {
-        return edit_text_area;
+//    public static JTextArea getEdit_text_area() {
+//        return edit_text_area;
+//    }
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        forchanged = true;
     }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        forchanged = true;
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+        forchanged = true;
+    }
+
 
 }
 
