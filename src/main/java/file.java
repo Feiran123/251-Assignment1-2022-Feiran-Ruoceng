@@ -72,7 +72,7 @@ public class file extends JFrame implements ActionListener {
     public void New() {
         if (flag == 0 || flag == 1) {        // when it Start:0，get a new text:1
             return;
-        } else if (flag == 2 && this.currentPath == null) {        //修改后
+        } else if (flag == 2 && this.currentPath == null) {        //after change
 
             int result = JOptionPane.showConfirmDialog(this, "Are you sure to save changes to untitled?", "Notepad", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
@@ -85,7 +85,7 @@ public class file extends JFrame implements ActionListener {
             return;
         } else if (flag == 2 && this.currentPath != null) {
 
-            int result = JOptionPane.showConfirmDialog(this, "是否将更改保存到" + this.currentPath + "?", "Notepad", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            int result = JOptionPane.showConfirmDialog(this, "If save the change to" + this.currentPath + "?", "Notepad", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
                 this.save();        //save strightly
             } else if (result == JOptionPane.NO_OPTION) {

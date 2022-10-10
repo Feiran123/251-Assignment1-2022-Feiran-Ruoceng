@@ -21,7 +21,7 @@ public class Mytext extends JFrame implements DocumentListener {
 
     protected JMenuBar menuBar;
     protected JMenu File,Search,View,syntax,Manage,Format,Help;
-    //菜单栏内的菜单
+    //menu
     protected static JMenuItem file_new;
     protected static JMenuItem file_open;
     protected static JMenuItem file_save;

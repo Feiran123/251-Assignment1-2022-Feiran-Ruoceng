@@ -17,7 +17,7 @@ public class search extends JFrame implements ActionListener {
     public void find(){
 
         final JDialog findDialog=new JDialog(this,"find",false);
-        Container con=findDialog.getContentPane();//返回此对话框的contentPane对象
+        Container con=findDialog.getContentPane();
         con.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         JLabel findContentLabel=new JLabel("find content: ");
@@ -66,7 +66,7 @@ public class search extends JFrame implements ActionListener {
         con.add(panel3);
 
         findDialog.setSize(410,180);
-        findDialog.setResizable(false);//不可调整大小
+        findDialog.setResizable(false);//can not change the size
         findDialog.setLocation(230,280);
         findDialog.setVisible(true);
 
@@ -86,7 +86,7 @@ public class search extends JFrame implements ActionListener {
                 strA=str3;
                 strB=str4;
             }
-            if(upButton.isSelected()){ //向上开始
+            if(upButton.isSelected()){ //up
                 if(Mytext.myTextArea.getSelectedText()==null)
                     k=strA.lastIndexOf(strB,Mytext.myTextArea.getCaretPosition()-1);
                 else
@@ -97,7 +97,7 @@ public class search extends JFrame implements ActionListener {
                 }else{
                     JOptionPane.showMessageDialog(null,"What you were looking for could not be found","find",JOptionPane.INFORMATION_MESSAGE);
                 }
-            }else if (circleButton.isSelected()) {// 选择循环
+            }else if (circleButton.isSelected()) {// circulate
 
                 if (Mytext.myTextArea.getSelectedText() == null)
                     k=strA.indexOf(strB,Mytext.myTextArea.getCaretPosition()+1);

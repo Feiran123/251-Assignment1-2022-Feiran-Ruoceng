@@ -46,7 +46,7 @@ public class format extends JFrame implements ActionListener {
         }
         if(e.getSource()==Mytext.Back){
             jcc1 = new JColorChooser();
-            JOptionPane.showMessageDialog(this, jcc1,"选择背景颜色颜色",-1);
+            JOptionPane.showMessageDialog(this, jcc1,"Please the background color",-1);
             color = jcc1.getColor();
             Mytext.myTextArea.setBackground(color);
 
