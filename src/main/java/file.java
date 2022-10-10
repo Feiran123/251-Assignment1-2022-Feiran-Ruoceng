@@ -70,13 +70,13 @@ public class file extends JFrame implements ActionListener {
 
 
     public void New() {
-        if (flag == 0 || flag == 1) {        //刚启动记事本为0，刚新建文档为1
+        if (flag == 0 || flag == 1) {        // when it Start:0，get a new text:1
             return;
         } else if (flag == 2 && this.currentPath == null) {        //修改后
-            //1、（刚启动记事本为0，刚新建文档为1）条件下修改后
+
             int result = JOptionPane.showConfirmDialog(this, "Are you sure to save changes to untitled?", "Notepad", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
-                this.saveAs();        //另存为
+                this.saveAs();        //save as
             } else if (result == JOptionPane.NO_OPTION) {
                 Mytext.myTextArea.setText("");
                 this.setTitle("Untitled");
@@ -84,10 +84,10 @@ public class file extends JFrame implements ActionListener {
             }
             return;
         } else if (flag == 2 && this.currentPath != null) {
-            //2、（保存的文件为3）条件下修改后
+
             int result = JOptionPane.showConfirmDialog(this, "是否将更改保存到" + this.currentPath + "?", "Notepad", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
-                this.save();        //直接保存，有路径
+                this.save();        //save strightly
             } else if (result == JOptionPane.NO_OPTION) {
                 Mytext.myTextArea.setText("");
                 this.setTitle("Untitled");
@@ -106,7 +106,7 @@ public class file extends JFrame implements ActionListener {
         JFileChooser jFileChooser = new JFileChooser();
         int res = jFileChooser.showSaveDialog(this);
         if (res == JFileChooser.APPROVE_OPTION) {
-            //取得选择的文件[文件名是自己输入的]
+            //get the chosen file
             File file = jFileChooser.getSelectedFile();
             FileWriter fw = null;
             //保存
@@ -258,7 +258,7 @@ public class file extends JFrame implements ActionListener {
         Document document=new Document(PageSize.A4,50,50,30,20);
         String text = Mytext.myTextArea.getText();
         export2pdf.setVisible(true);
-        String dirPath = export2pdf.getDirectory();  //获取保存文件路径并保存到字符串中
+        String dirPath = export2pdf.getDirectory();  //get the file root
         System.out.println(dirPath);
         String fileName = export2pdf.getFile() + ".pdf";
         System.out.println(fileName);

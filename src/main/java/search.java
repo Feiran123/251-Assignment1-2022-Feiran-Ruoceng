@@ -180,7 +180,7 @@ public class search extends JFrame implements ActionListener {
             }else{
                 strA=str3;
                 strB=str4;
-            }//转成大写
+            }//change to capital
         if(circleButton.isSelected()){
             if(Mytext.myTextArea.getSelectedText()==null){
                 k=strA.indexOf(strB,Mytext.myTextArea.getCaretPosition()+1);
@@ -197,7 +197,7 @@ public class search extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null,"What you were looking for could not be found","find",
                         JOptionPane.INFORMATION_MESSAGE);
             }
-        }else{//否则向下循环
+        }else{//or circulate down
             if(Mytext.myTextArea.getSelectedText()==null){
                 k=strA.indexOf(strB,Mytext.myTextArea.getCaretPosition()+1);
             } else {
