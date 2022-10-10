@@ -243,7 +243,6 @@ public class file extends JFrame implements ActionListener {
         }
     }
 
-
     public void print(){
         try{
             p= getToolkit().getPrintJob(this,"ok",null);
