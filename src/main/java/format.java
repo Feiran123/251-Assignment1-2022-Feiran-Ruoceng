@@ -1,9 +1,12 @@
+import com.esotericsoftware.yamlbeans.YamlReader;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.FileReader;
 
 public class format extends JFrame implements ActionListener {
     private static final long serialVersionUID = -6437493905392469749L;
@@ -44,6 +47,11 @@ public class format extends JFrame implements ActionListener {
             color = jcc1.getColor();
             Mytext.myTextArea.setBackground(color);
 
+        }
+    }
+    public void run(){
+        try{
+            YamlReader reader=new YamlReader(new FileReader(""))
         }
     }
 }
